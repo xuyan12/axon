@@ -34,6 +34,7 @@ import { FinalPageComponent } from './pages/participant/final-page/final-page.co
 import { DataComponent } from './pages/dashboard/data/data.component';
 import { MturkQuestionnaireComponent } from './pages/questionnaires/mturk-questionnaire/mturk-questionnaire.component';
 import { RotateDirective } from './pages/tasks/demand-selection/Rotate.directive';
+import { EverydayChoiceComponent } from './pages/tasks/everyday-choice/everyday-choice.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { RotateDirective } from './pages/tasks/demand-selection/Rotate.directive
     FinalPageComponent,
     DataComponent,
     MturkQuestionnaireComponent,
-    RotateDirective
+    RotateDirective,
+    EverydayChoiceComponent
   ],
   imports: [
     BrowserModule,
