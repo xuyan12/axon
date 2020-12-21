@@ -33,7 +33,7 @@ const routes: Routes = [
     path: 'dashboard', 
     component: DashboardComponent, 
     data: { roles: [Role.ADMIN] },
-    canActivate: [CanActivateRouteGuard],
+    //canActivate: [CanActivateRouteGuard],
     children: [
       { path: '', redirectTo: 'experiments', pathMatch: 'full' },
       { path: 'experiments', component: ViewExperimentsComponent },
@@ -55,8 +55,8 @@ const routes: Routes = [
   { path: 'experiments/simon-2', component: SimonTaskFinalComponent },
   { path: RouteMap.smileyface.route, component: SmileyFaceComponent },
   { path: RouteMap.fingertapping.route, component: FingerTappingTaskComponent },
-  { path: RouteMap.nback.route, component: NBackComponent, canActivate: [ExperimentRouteGuard] },
-  { path: RouteMap.stroop.route, component: StroopTaskComponent, canActivate: [ExperimentRouteGuard] },
+  { path: RouteMap.nback.route, component: NBackComponent, /*canActivate: [ExperimentRouteGuard]*/ },
+  { path: RouteMap.stroop.route, component: StroopTaskComponent, /*canActivate: [ExperimentRouteGuard] */},
   { path: RouteMap.trailmaking.route, component: TrailMakingComponent },
   { path: 'complete', component: FinalPageComponent },
   { path: '**', redirectTo: '/login/mturk', pathMatch: 'full' }
