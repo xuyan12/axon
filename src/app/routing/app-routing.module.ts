@@ -16,6 +16,7 @@ import { NBackComponent } from '../pages/tasks/n-back/n-back.component';
 import { StroopTaskComponent } from '../pages/tasks/stroop/stroop-task.component';
 import { TrailMakingComponent } from '../pages/tasks/trail-making/trail-making.component';
 import { EverydayChoiceComponent } from '../pages/tasks/everyday-choice/everyday-choice.component';
+import { EverydayChoice2Component } from '../pages/tasks/everyday-choice2/everyday-choice2.component';
 import { ViewExperimentsComponent } from '../pages/dashboard/view-experiments/view-experiments.component';
 import { ViewTasksComponent } from '../pages/dashboard/view-tasks/view-tasks.component';
 import { MturkLoginComponent } from '../pages/mturk-login/mturk-login.component'
@@ -60,6 +61,7 @@ const routes: Routes = [
   { path: RouteMap.stroop.route, component: StroopTaskComponent, /*canActivate: [ExperimentRouteGuard] */},
   { path: RouteMap.trailmaking.route, component: TrailMakingComponent },
   { path: RouteMap.everydaychoice.route, component: EverydayChoiceComponent },
+  { path: RouteMap.everydaychoice2.route, component: EverydayChoice2Component },
   { path: 'complete', component: FinalPageComponent },
   { path: '**', redirectTo: '/login/mturk', pathMatch: 'full' }
 ];

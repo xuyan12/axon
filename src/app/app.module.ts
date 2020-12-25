@@ -35,6 +35,7 @@ import { DataComponent } from './pages/dashboard/data/data.component';
 import { MturkQuestionnaireComponent } from './pages/questionnaires/mturk-questionnaire/mturk-questionnaire.component';
 import { RotateDirective } from './pages/tasks/demand-selection/Rotate.directive';
 import { EverydayChoiceComponent } from './pages/tasks/everyday-choice/everyday-choice.component';
+import { EverydayChoice2Component } from './pages/tasks/everyday-choice2/everyday-choice2.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { EverydayChoiceComponent } from './pages/tasks/everyday-choice/everyday-
     DataComponent,
     MturkQuestionnaireComponent,
     RotateDirective,
-    EverydayChoiceComponent
+    EverydayChoiceComponent,
+    EverydayChoice2Component
   ],
   imports: [
     BrowserModule,

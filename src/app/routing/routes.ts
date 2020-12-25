@@ -87,10 +87,17 @@ export const RouteMap: ExperimentRoutingMap = {
   },
   everydaychoice: {
     id: "everydaychoice",
-    title: "Everyday Choice Task",
+    title: "Everyday Choice Task Part 1, aka Rating Game",
     description: "Description of Everyday Choice Task",
     type: "experimental",
     route: "task/everydaychoice"
+  },
+  everydaychoice2: {
+    id: "everydaychoice2",
+    title: "Everyday Choice Task Part 2, aka Choice Game",
+    description: "Description of Everyday Choice Task",
+    type: "experimental",
+    route: "task/everydaychoice2"
   }
 
   };
