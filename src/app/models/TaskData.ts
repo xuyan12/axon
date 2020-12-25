@@ -50,3 +50,12 @@ export class TaskSwitching extends TaskData {
     responseTime: number;
     isCorrect: boolean;
 }
+
+export class ratingTask extends TaskData {
+    counterbalance: number;
+    ratingType: string; 
+    trial: number; 
+    activity: string;
+    userAnswer: number;
+    responseTime: number;
+}
