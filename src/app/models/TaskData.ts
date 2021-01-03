@@ -58,4 +58,14 @@ export class ratingTask extends TaskData {
     activity: string;
     userAnswer: number;
     responseTime: number;
+
 }
+
+export class choiceTask extends TaskData {
+    trial: number; 
+    activityLeft: string;
+    activityRight: string;
+    userAnswer: number;
+    responseTime: number;
+}
+
