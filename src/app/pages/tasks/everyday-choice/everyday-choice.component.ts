@@ -29,8 +29,8 @@ export class EverydayChoiceComponent implements OnInit {
   durationOfFeedback: number;    // In milliseconds
   interTrialDelay: number = 1000;       // In milliseconds
   practiceTrials: number = 2;
-  actualTrials: number = 1;  //change into number of activities
-  delayToShowHelpMessage: number = 4000;
+  actualTrials: number = 2;  //change into number of activities
+  delayToShowHelpMessage: number = 4000; //delay to show help message, change to 10000
   durationHelpMessageShown: number = 6000;
 
   step: number = 1;
@@ -129,7 +129,7 @@ export class EverydayChoiceComponent implements OnInit {
     this.resetData();
     this.proceedtoNextStep();
     await this.wait(2000);
-    this.currentPracSet = this.shuffleStimulus(pracSet); //DOES THIS WORK
+    this.currentPracSet = this.shuffleStimulus(pracSet); 
     this.proceedtoNextStep();
     this.isPractice = true;
     this.currentTrial = 0;
@@ -142,7 +142,7 @@ export class EverydayChoiceComponent implements OnInit {
     this.resetData();
     this.proceedtoNextStep();
     await this.wait(2000);
-    this.currentTaskSet = this.shuffleStimulus(taskSet); //DOES THIS WORK
+    this.currentTaskSet = this.shuffleStimulus(taskSet); 
     this.proceedtoNextStep();
     this.isPractice = false;
     this.currentTrial = 0;
@@ -278,8 +278,9 @@ export class EverydayChoiceComponent implements OnInit {
 
   async showFeedback() {
     this.feedbackShown = true;
-    //this.isStimulus = false;
-    //this.isResponseAllowed = false;
+    this.isStimulus = false;
+    this.isRatingscale = false;
+    this.isResponseAllowed = false;
 
     if (this.data[this.data.length - 1].responseTime === 0) {
       this.data[this.data.length - 1].responseTime = this.maxResponseTime;
