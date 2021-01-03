@@ -1,1 +1,211 @@
-<p>everyday-choice2 works!</p>
+<div class="container-fluid wrapper d-flex flex-column align-items-center justify-content-center">
+
+    <!-- Show welcome message -->
+    <div class="full-box d-flex flex-column align-items-center justify-content-between" *ngIf="!isBreak && step === 1">
+
+        <!-- Introduction -->
+
+        <div class="w-100 px-4 uppercase instructions" align="center">
+            <img class="w-100" src="/assets/images/instructions/everydaychoice-rating/LIKE/1.png" alt="">
+        </div>
+
+        <!-- Navigation buttons -->
+        <div class="w-100 p-4 uppercase">
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                <div>
+                    <button mat-raised-button color="primary" disabled>
+                        <mat-icon>
+                            arrow_backward
+                        </mat-icon>
+                        &nbsp;
+                        PREVIOUS
+                    </button>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" (click)="proceedtoNextStep()">
+                        NEXT
+                        &nbsp;
+                        <mat-icon>
+                            arrow_forward
+                        </mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Show instruction -->
+    <div class="full-box d-flex flex-column align-items-center justify-content-between" *ngIf="!isBreak && step === 2">
+
+        <!-- Introduction -->
+
+        <div class="w-100 px-4 uppercase instructions" align="center">
+            <img class="w-100" src="/assets/images/instructions/everydaychoice-rating/LIKE/2.png" alt="">
+        </div>
+
+
+        <!-- Navigation buttons -->
+        <div class="w-100 p-4 uppercase">
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                <div>
+                    <button mat-raised-button color="primary" disabled>
+                        <mat-icon>
+                            arrow_backward
+                        </mat-icon>
+                        &nbsp;
+                        PREVIOUS
+                    </button>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" (click)="proceedtoNextStep()">
+                        NEXT
+                        &nbsp;
+                        <mat-icon>
+                            arrow_forward
+                        </mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Show practice round message -->
+    <div class="full-box d-flex flex-column align-items-center justify-content-between" *ngIf="!isBreak && step === 3">
+        <!-- Show example page part 5 -->
+        <div class="w-100 px-4 instructions uppercase" align="center">
+            <img src="/assets/images/instructions/nback/6.png" alt="Instructions image" class="w-100">
+        </div>
+
+        <!-- Navigation buttons -->
+        <div class="w-100 p-4 uppercase">
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                <div>
+                    <button mat-raised-button color="primary" (click)="proceedtoPreviousStep()">
+                        <mat-icon>
+                            arrow_backward
+                        </mat-icon>
+                        &nbsp;
+                        PREVIOUS
+                    </button>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" (click)="startPractice()">
+                        START
+                        &nbsp;
+                        <mat-icon>
+                            arrow_forward
+                        </mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show loader -->
+    <div class="full-box d-flex flex-column align-items-center justify-content-center" *ngIf="!isBreak && step === 4">
+        <mat-spinner [diameter]="75"></mat-spinner>
+    </div>
+
+    <!-- Start Practice Round -->
+    <div class="full-box d-flex flex-column align-items-center justify-content-center" *ngIf="!isBreak && step === 5">
+
+        <div *ngIf="isStimulus" id='wrapper' style="position: absolute; height: 60%">
+
+            <div id='left' style="  font-size: 35px; text-transform: uppercase;line-height: normal;">
+                {{currentActivityLeft}}
+            </div>
+            <div id='middle'>
+            </div>
+            <div id='right' style=" font-size: 35px; text-transform: uppercase;line-height: normal;">
+                {{currentActivityRight}}
+            </div>
+        </div>
+
+        <div *ngIf="isRatingscale" align="center" style="position: absolute; height: 30%">
+            <img src="/assets/images/stimuli/ratingScale/ratingScale_choice.png">
+        </div>
+
+        <div *ngIf="showFixation">
+            <i class="material-icons" style="font-size: 60px;">add</i>
+        </div>
+
+
+    </div>
+
+    <!-- Show loader -->
+    <div class="full-box d-flex flex-column align-items-center justify-content-center" *ngIf="!isBreak && step === 6">
+        <mat-spinner [diameter]="75"></mat-spinner>
+    </div>
+
+
+    <!-- Show practice round finished message -->
+    <div class="full-box d-flex flex-column align-items-center justify-content-between" *ngIf="!isBreak && step === 7">
+        <!-- Practice round complete -->
+        <div class="w-100 px-4 instructions uppercase" align="center">
+            <img src="/assets/images/instructions/nback/7.png" alt="Instructions image" class="w-100">
+        </div>
+
+
+        <!-- Navigation buttons -->
+        <div class="w-100 p-4 uppercase">
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                <div>
+                    <button mat-raised-button color="primary" disabled>
+                        <mat-icon>
+                            arrow_backward
+                        </mat-icon>
+                        &nbsp;
+                        PREVIOUS
+                    </button>
+                </div>
+                <div>
+                    <button mat-raised-button color="primary" (click)="startActualGame()">
+                        START
+                        &nbsp;
+                        <mat-icon>
+                            arrow_forward
+                        </mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Show loader -->
+    <div class="full-box d-flex flex-column align-items-center justify-content-center" *ngIf="!isBreak && step === 8">
+        <mat-spinner [diameter]="75"></mat-spinner>
+    </div>
+
+    <!-- Start Actual Round -->
+    <div class="full-box d-flex flex-column align-items-center justify-content-center" *ngIf="!isBreak && step === 9">
+
+        <div *ngIf="isStimulus" id='wrapper' style="position: absolute; height: 60%">
+
+            <div id='left' style="  font-size: 35px; text-transform: uppercase;line-height: normal;">
+                {{currentActivityLeft}}
+            </div>
+            <div id='middle'>
+            </div>
+            <div id='right' style=" font-size: 35px; text-transform: uppercase;line-height: normal;">
+                {{currentActivityRight}}
+            </div>
+
+        </div>
+
+        <div *ngIf="isRatingscale" align="center" style="position: absolute; height: 30%">
+            <img src="/assets/images/stimuli/ratingScale/ratingScale_choice.png">
+        </div>
+
+
+        <div *ngIf="showFixation">
+            <i class="material-icons" style="font-size: 60px;">add</i>
+        </div>
+
+
+    </div>
+
+
+
+</div>
