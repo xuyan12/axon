@@ -8,8 +8,10 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Role } from 'src/app/models/InternalDTOs';
 import { choiceTask } from '../../../models/TaskData';
-import { pracSet } from './stimuli_practice';
-import { taskSet } from './stimuli_task';
+//import { pracSet } from './stimuli_practice';
+import { activityPair,  pracSet } from './stimuli_task';
+import { activityList } from './activityList';
+
 
 declare function setFullScreen(): any;
 
@@ -19,26 +21,28 @@ declare function setFullScreen(): any;
   styleUrls: ['./everyday-choice2.component.scss']
 })
 export class EverydayChoice2Component implements OnInit {
-  
+
   userID: string;
   isScored: boolean | number = false;
   showFeedbackAfterEveryTrial: boolean | number = false;
   showScoreAfterEveryTrial: boolean | number = false;
   numberOfBreaks: number = 0;
-  maxResponseTime: number = 10000;       //CHANGE TO 30000 // In milliseconds
+  maxResponseTime: number = 20000;       //CHANGE TO 30000 // In milliseconds
   durationOfFeedback: number;    // In milliseconds
   interTrialDelay: number = 1000;       // In milliseconds
   practiceTrials: number = 1;
-  actualTrials: number = 2;  //change into number of activities
+  actualTrials: number = 45;  //change into number of activities
   delayToShowHelpMessage: number = 4000; //delay to show help message, change to 10000
-  durationHelpMessageShown: number = 6000; 
+  durationHelpMessageShown: number = 6000;
 
   step: number = 1;
-  currentSet: string[][];
-  currentPracSet: string[][];
-  currentTaskSet: string[][];
-  currentActivityPair: string[];
-  currentActivityPairOrdered: string[];
+  activityDict: string[]; //dictionary/pool of acitivities, i.e. if activityX is to appear twice throughout the task, it appears twice in the dictionary 
+  currentSet: activityPair[]; //the stimulus set of choice pairs currently used (can be practice or task)
+  currentTaskset: activityPair[];
+  currentPracSet: activityPair[];
+  currentPairs: activityPair[] = [];
+  currentActivityPair: activityPair;
+  //currentActivityPairOrdered: activityPair;
   currentActivityLeft: string = '';
   currentActivityRight: string = '';
 
@@ -128,7 +132,7 @@ export class EverydayChoice2Component implements OnInit {
     this.resetData();
     this.proceedtoNextStep();
     await this.wait(2000);
-    this.currentPracSet = this.shuffleStimulus(pracSet); 
+    this.currentPracSet = this.shuffleStimulus(pracSet);
     this.proceedtoNextStep();
     this.isPractice = true;
     this.currentTrial = 0;
@@ -139,12 +143,12 @@ export class EverydayChoice2Component implements OnInit {
 
   async startActualGame() {
     this.resetData();
+    this.currentTaskset = this.semiRandomSet();
     this.proceedtoNextStep();
     await this.wait(2000);
-    this.currentTaskSet = this.shuffleStimulus(taskSet).slice(0,this.actualTrials); //CHANGE; shuffle then take first N pairs, N being # of trials
     this.proceedtoNextStep();
     this.isPractice = false;
-    this.currentTrial = 0;
+    this.currentTrial = 0;  
     this.showStimulus();
   }
   async showStimulus() {
@@ -160,13 +164,13 @@ export class EverydayChoice2Component implements OnInit {
 
     this.isStimulus = true;
     await this.wait(1500);
-    this.isRatingscale = true; 
+    this.isRatingscale = true;
     this.isResponseAllowed = true;
 
     this.timer.started = new Date().getTime();
     this.timer.ended = 0;
 
-    this.showHelpMessage("Please make the rating by pressing the corresponding number key", this.delayToShowHelpMessage, this.durationHelpMessageShown);
+    this.showHelpMessage("Please make the rating by pressing the corresponding number key", this.delayToShowHelpMessage, this.durationHelpMessageShown); /*, this.durationHelpMessageShown*/
 
     // This is the delay between showing the stimulus and showing the feedback
     this.sTimeout = setTimeout(() => {
@@ -178,10 +182,13 @@ export class EverydayChoice2Component implements OnInit {
   }
 
 
-  private showHelpMessage(helpMessage: string, delay: number, duration: number) {
+  private showHelpMessage(helpMessage: string, delay: number, duration: number) { //, duration: number
     this.snackbarTimeout = setTimeout(() => {
       this.snackbarService.openInfoSnackbar(helpMessage, "", duration);
     }, delay)
+    /*this.snackbarTimeout = setTimeout(() => {
+      alert(helpMessage);
+    }, delay) */
   }
 
   private cancelHelpMessage() {
@@ -191,8 +198,8 @@ export class EverydayChoice2Component implements OnInit {
 
 
 
-  private shuffleStimulus(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+  private shuffleStimulus(array) { //: Array<activityPair>) : Array<activityPair> {
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
@@ -210,20 +217,88 @@ export class EverydayChoice2Component implements OnInit {
     return array;
   }
 
+  private semiRandomSet() {
+    
+    /* 
+    let currentPairs = new Array<activityPair>();
+    let currentTaskSet = this.shuffleStimulus(taskSet);
+    console.log(currentTaskSet);
+
+    while (this.activityDict.length > 0) { //this.currentPairs.length < this.actualTrials
+      if (currentTaskSet.length == 0) throw new Error("currentTaskSet must not be empty");  
+      let tempPair = currentTaskSet.shift(); //take the first pair from the shuffled taskSet
+      console.log(tempPair.activityA)
+      if (this.activityDict.includes(tempPair.activityA) && this.activityDict.includes(tempPair.activityB)) {
+        currentPairs.push(tempPair)
+        let index0 = this.activityDict.indexOf(tempPair.activityA);
+        if (index0 > -1) {
+          this.activityDict.splice(index0, 1);
+        }
+        let index1 = this.activityDict.indexOf(tempPair.activityB);
+        if (index1 > -1) {
+          this.activityDict.splice(index1, 1);
+        }
+      }
+      console.log(this.activityDict);
+    } */
+   
+    //if each activity is shown twice; else this.activityDict = activityList
+    this.activityDict = activityList.concat(activityList);
+    
+
+    while (this.currentPairs.length < this.actualTrials) {
+
+      let tempA = this.activityDict[Math.floor(Math.random() * this.activityDict.length)];
+      let tempB = this.activityDict[Math.floor(Math.random() * this.activityDict.length)];
+      if (tempA != tempB) {
+        let tempPair = new activityPair(tempA, tempB);
+        //console.log(tempPair); //delete
+        let pairDuplicated = this.currentPairs.find(x => (x.activityA == tempA && x.activityB == tempB)|| (x.activityA == tempB && x.activityB == tempA));
+        //let tempBoolean = currentPairs.includes(new activityPair(tempB, tempA)) || currentPairs.includes(tempPair);
+        if (pairDuplicated == undefined){
+          this.currentPairs.push(tempPair);
+          let index0 = this.activityDict.indexOf(tempPair.activityA);
+          if (index0 > -1) {
+            this.activityDict.splice(index0, 1);
+          }
+          let index1 = this.activityDict.indexOf(tempPair.activityB);
+          if (index1 > -1) {
+            this.activityDict.splice(index1, 1);
+          }
+        }
+        
+      }
+    }
+    console.log(this.currentPairs); //delete
+    return this.currentPairs;
+  }
+
+
   generateStimulus() {
-    
-    
+
+
     if (this.isPractice == true) {
       this.currentSet = this.currentPracSet
     }
     else {
-      this.currentSet = this.currentTaskSet
+      this.currentSet = this.currentTaskset;
     }
 
     this.currentActivityPair = this.currentSet[this.currentTrial - 1];
-    this.currentActivityPairOrdered = this.shuffleStimulus(this.currentActivityPair);
-    this.currentActivityLeft = this.currentActivityPairOrdered[0];
-    this.currentActivityRight = this.currentActivityPairOrdered[1];
+    this.currentActivityLeft = this.currentActivityPair.activityA;
+    this.currentActivityRight = this.currentActivityPair.activityB;
+    /* var tempIndex = Math.floor(Math.random() * 2);
+    if (tempIndex == 0) {
+      this.currentActivityLeft = this.currentActivityPair.activityA;
+      this.currentActivityRight = this.currentActivityPair.activityB;
+    }
+    else {
+      this.currentActivityRight = this.currentActivityPair.activityA;
+      this.currentActivityLeft = this.currentActivityPair.activityB;
+    } */
+    //this.currentActivityPairOrdered = this.shuffleStimulus(this.currentActivityPair);
+    //this.currentActivityLeft = this.currentActivityPair[tempIndex];
+    //this.currentActivityRight = this.currentActivityPair[tempIndex];
 
 
     this.data.push({
@@ -349,7 +424,7 @@ export class EverydayChoice2Component implements OnInit {
     this.currentActivityLeft = '';
     this.currentActivityRight = '';
     this.feedbackShown = false;
-    
+
   }
 
 
