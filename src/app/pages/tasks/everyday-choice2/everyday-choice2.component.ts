@@ -36,13 +36,10 @@ export class EverydayChoice2Component implements OnInit {
   durationHelpMessageShown: number = 6000;
 
   step: number = 1;
-  activityDict: string[]; //dictionary/pool of acitivities, i.e. if activityX is to appear twice throughout the task, it appears twice in the dictionary 
   currentSet: activityPair[]; //the stimulus set of choice pairs currently used (can be practice or task)
   currentTaskset: activityPair[];
   currentPracSet: activityPair[];
-  currentPairs: activityPair[] = [];
   currentActivityPair: activityPair;
-  //currentActivityPairOrdered: activityPair;
   currentActivityLeft: string = '';
   currentActivityRight: string = '';
 
@@ -143,7 +140,16 @@ export class EverydayChoice2Component implements OnInit {
 
   async startActualGame() {
     this.resetData();
-    this.currentTaskset = this.semiRandomSet();
+    let completed = false;
+    while (!completed){
+    try {
+      this.currentTaskset = this.semiRandomSet();
+      completed = true;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+    //this.currentTaskset = this.semiRandomSet();
     this.proceedtoNextStep();
     await this.wait(2000);
     this.proceedtoNextStep();
@@ -218,59 +224,37 @@ export class EverydayChoice2Component implements OnInit {
   }
 
   private semiRandomSet() {
-    
-    /* 
-    let currentPairs = new Array<activityPair>();
-    let currentTaskSet = this.shuffleStimulus(taskSet);
-    console.log(currentTaskSet);
-
-    while (this.activityDict.length > 0) { //this.currentPairs.length < this.actualTrials
-      if (currentTaskSet.length == 0) throw new Error("currentTaskSet must not be empty");  
-      let tempPair = currentTaskSet.shift(); //take the first pair from the shuffled taskSet
-      console.log(tempPair.activityA)
-      if (this.activityDict.includes(tempPair.activityA) && this.activityDict.includes(tempPair.activityB)) {
-        currentPairs.push(tempPair)
-        let index0 = this.activityDict.indexOf(tempPair.activityA);
-        if (index0 > -1) {
-          this.activityDict.splice(index0, 1);
-        }
-        let index1 = this.activityDict.indexOf(tempPair.activityB);
-        if (index1 > -1) {
-          this.activityDict.splice(index1, 1);
-        }
-      }
-      console.log(this.activityDict);
-    } */
    
-    //if each activity is shown twice; else this.activityDict = activityList
-    this.activityDict = activityList.concat(activityList);
-    
+    //if each activity is shown twice; 
+    let activityDict = activityList.concat(activityList);
+    let currentPairs: activityPair[] = [];
 
-    while (this.currentPairs.length < this.actualTrials) {
+    while (currentPairs.length < this.actualTrials) {
+      //randomly draw two activities from the array of all activities (the 'dictionary')
+      let tempA = activityDict[Math.floor(Math.random() * activityDict.length)];
+      let tempB = activityDict[Math.floor(Math.random() * activityDict.length)];
 
-      let tempA = this.activityDict[Math.floor(Math.random() * this.activityDict.length)];
-      let tempB = this.activityDict[Math.floor(Math.random() * this.activityDict.length)];
       if (tempA != tempB) {
         let tempPair = new activityPair(tempA, tempB);
-        //console.log(tempPair); //delete
-        let pairDuplicated = this.currentPairs.find(x => (x.activityA == tempA && x.activityB == tempB)|| (x.activityA == tempB && x.activityB == tempA));
-        //let tempBoolean = currentPairs.includes(new activityPair(tempB, tempA)) || currentPairs.includes(tempPair);
+        let pairDuplicated = currentPairs.find(x => (x.activityA == tempA && x.activityB == tempB)|| (x.activityA == tempB && x.activityB == tempA));
         if (pairDuplicated == undefined){
-          this.currentPairs.push(tempPair);
-          let index0 = this.activityDict.indexOf(tempPair.activityA);
+          currentPairs.push(tempPair);
+          let index0 = activityDict.indexOf(tempPair.activityA);
           if (index0 > -1) {
-            this.activityDict.splice(index0, 1);
+            activityDict.splice(index0, 1);
           }
-          let index1 = this.activityDict.indexOf(tempPair.activityB);
+          let index1 = activityDict.indexOf(tempPair.activityB);
           if (index1 > -1) {
-            this.activityDict.splice(index1, 1);
+            activityDict.splice(index1, 1);
           }
         }
-        
+      }
+      else if (tempA == tempB && activityDict.length ==2) {
+        throw new Error("Failed to generate set")
       }
     }
-    console.log(this.currentPairs); //delete
-    return this.currentPairs;
+    //console.log(currentPairs); //delete
+    return currentPairs;
   }
 
 
@@ -287,19 +271,6 @@ export class EverydayChoice2Component implements OnInit {
     this.currentActivityPair = this.currentSet[this.currentTrial - 1];
     this.currentActivityLeft = this.currentActivityPair.activityA;
     this.currentActivityRight = this.currentActivityPair.activityB;
-    /* var tempIndex = Math.floor(Math.random() * 2);
-    if (tempIndex == 0) {
-      this.currentActivityLeft = this.currentActivityPair.activityA;
-      this.currentActivityRight = this.currentActivityPair.activityB;
-    }
-    else {
-      this.currentActivityRight = this.currentActivityPair.activityA;
-      this.currentActivityLeft = this.currentActivityPair.activityB;
-    } */
-    //this.currentActivityPairOrdered = this.shuffleStimulus(this.currentActivityPair);
-    //this.currentActivityLeft = this.currentActivityPair[tempIndex];
-    //this.currentActivityRight = this.currentActivityPair[tempIndex];
-
 
     this.data.push({
       trial: this.currentTrial,
