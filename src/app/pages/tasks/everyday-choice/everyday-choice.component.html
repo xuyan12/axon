@@ -113,23 +113,30 @@
     <!-- Start Practice Round -->
     <div class="full-box d-flex flex-column align-items-center justify-content-center" *ngIf="!isBreak && step === 5">
 
+        <!-- top half -->
+        <div style="height: 50%;" class="d-flex justify-content-between align-items-center w-100">
+
+            <div *ngIf="isStimulus" style="width: 100%; text-align: center;">
+
+                <span style="text-transform: uppercase; text-transform: uppercase; font-size: 3rem; width: 100%;">
+                    {{currentActivity}}
+                </span>
     
-
-        <div *ngIf="isStimulus" style="position: absolute; height: 60%">
-
-            <div style=" font-size: 65px; text-transform: uppercase;">
-                {{currentActivity}}
             </div>
 
         </div>
 
-        <div *ngIf="isRatingscale" align="center" style="position: absolute; height: 30%">
-            <div *ngIf="counterbalance ===0; else elseBlock">
-                <img src="/assets/images/stimuli/ratingScale/ratingScale_like.png">
+        <!-- bottom half -->
+        <div style="height: 50%;" class="d-flex justify-content-center w-100">
+            <div *ngIf="isRatingscale">
+                <div *ngIf="counterbalance === 0; else elseBlock">
+                    <img src="/assets/images/stimuli/ratingScale/ratingScale_like.png">
+                </div>
+                <ng-template #elseBlock><img src="/assets/images/stimuli/ratingScale/ratingScale_should.png" alt="">
+                </ng-template>
             </div>
-            <ng-template #elseBlock><img src="/assets/images/stimuli/ratingScale/ratingScale_should.png" alt="">
-            </ng-template>
         </div>
+
         <div *ngIf="showFixation">
             <i class="material-icons" style="font-size: 60px;">add</i>
         </div>

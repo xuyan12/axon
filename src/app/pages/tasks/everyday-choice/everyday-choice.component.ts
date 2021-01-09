@@ -104,13 +104,13 @@ export class EverydayChoiceComponent implements OnInit {
 
     const decodedToken = this.authService.getDecodedToken()
     this.counterbalance = Math.floor(Math.random() * 2); //returns 0 or 1
-    if (!this.taskManager.hasExperiment() && decodedToken.Role !== Role.ADMIN) {
-      this.router.navigate(['/login/mturk'])
-      this.snackbarService.openErrorSnackbar("Refresh has occurred")
-    }
+    // if (!this.taskManager.hasExperiment() && decodedToken.Role !== Role.ADMIN) {
+    //   this.router.navigate(['/login/mturk'])
+    //   this.snackbarService.openErrorSnackbar("Refresh has occurred")
+    // }
 
-    const jwt = this.authService.getDecodedToken()
-    this.userID = jwt.UserID
+    // const jwt = this.authService.getDecodedToken()
+    // this.userID = jwt.UserID
   }
 
   proceedtoPreviousStep() {
@@ -173,11 +173,11 @@ export class EverydayChoiceComponent implements OnInit {
     this.showHelpMessage("Please make the rating by pressing the corresponding number key", this.delayToShowHelpMessage, this.durationHelpMessageShown);
 
     // This is the delay between showing the stimulus and showing the feedback
-    this.sTimeout = setTimeout(() => {
-      if (!this.feedbackShown) {
-        this.showFeedback();
-      }
-    }, this.maxResponseTime);
+    // this.sTimeout = setTimeout(() => {
+    //   if (!this.feedbackShown) {
+    //     this.showFeedback();
+    //   }
+    // }, this.maxResponseTime);
 
   }
 
